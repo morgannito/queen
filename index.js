@@ -4,10 +4,13 @@ const numCPUs = require('os').cpus().length;
 nb_noeud = 0
 nb_feuille = 0
 nb_solution = 0
-n = 11
+n = 4
 board = []
 
-function test(board) {
+workers = []
+
+
+function verif_board(board) {
     for (let l1 = 0; l1 < board.length; l1++) {
         for (let l2 = 0; l2 < l1; l2++) {
             c1 = board[l1]
@@ -31,12 +34,19 @@ function place(board, line, max) {
             place(board, line + 1, max)
         } else {
             nb_feuille = nb_feuille + 1
-            if (test(board)) {
+            if (verif_board(board)) {
                 nb_solution = nb_solution + 1
             }
         }
     }
 }
+
+for (let step = 0; step < n; step++) {
+    board.push("0")
+}
+
+
+
 if (cluster.isMaster) {
     // Fork workers.
     for (var i = 0; i < numCPUs; i++) {
@@ -47,9 +57,5 @@ if (cluster.isMaster) {
     place(board, 0, n)
     console.timeEnd('test');
     console.log("n = ",nb_solution,"nombre de noeud =",nb_noeud,"nombre de feuille =",nb_feuille)
-}
-
-for (let step = 0; step < n; step++) {
-    board.push("0")
 }
 
