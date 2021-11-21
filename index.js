@@ -1,6 +1,7 @@
 var cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
-
+const WorkerPool = require('workerpool')
+// https://www.npmjs.com/package/workerpool
 nb_noeud = 0
 nb_feuille = 0
 nb_solution = 0
@@ -53,9 +54,10 @@ if (cluster.isMaster) {
         cluster.fork();
     }
 } else {
-    console.time('test')
-    place(board, 0, n)
-    console.timeEnd('test');
-    console.log("n = ",nb_solution,"nombre de noeud =",nb_noeud,"nombre de feuille =",nb_feuille)
+    // console.log("openz")
+    // console.time('test')
+    // place(board, 0, n)
+    // console.timeEnd('test');
+    // console.log("n = ",nb_solution,"nombre de noeud =",nb_noeud,"nombre de feuille =",nb_feuille)
 }
 
