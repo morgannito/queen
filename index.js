@@ -1,17 +1,17 @@
 var cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
-const WorkerPool = require('workerpool')
-// https://www.npmjs.com/package/workerpool
+
 nb_noeud = 0
 nb_feuille = 0
 nb_solution = 0
-n = 4
+n = 9
+tesst = 0
 board = []
 
 workers = []
 
 
-function verif_board(board) {
+function verif(board) {
     for (let l1 = 0; l1 < board.length; l1++) {
         for (let l2 = 0; l2 < l1; l2++) {
             c1 = board[l1]
@@ -35,7 +35,7 @@ function place(board, line, max) {
             place(board, line + 1, max)
         } else {
             nb_feuille = nb_feuille + 1
-            if (verif_board(board)) {
+            if (verif(board)) {
                 nb_solution = nb_solution + 1
             }
         }
@@ -48,16 +48,15 @@ for (let step = 0; step < n; step++) {
 
 
 
-if (cluster.isMaster) {
-    // Fork workers.
-    for (var i = 0; i < numCPUs; i++) {
-        cluster.fork();
-    }
-} else {
-    // console.log("openz")
-    // console.time('test')
-    // place(board, 0, n)
-    // console.timeEnd('test');
-    // console.log("n = ",nb_solution,"nombre de noeud =",nb_noeud,"nombre de feuille =",nb_feuille)
-}
+// if (cluster.isMaster) {
+//     // Fork workers.
+//     for (var i = 0; i < numCPUs; i++) {
+//         cluster.fork();
+//     }
+// } else {
+    console.time('test')
+    place(board, 0, n-tesst)
+    console.timeEnd('test');
+    console.log("n = ",nb_solution,"nombre de noeud =",nb_noeud,"nombre de feuille =",nb_feuille)
+// }
 
